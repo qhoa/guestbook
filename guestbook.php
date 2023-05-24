@@ -10,7 +10,7 @@
 	 }
 //	 printf('Connected successfully.<br />');
 	$result = $mysqli->query("SELECT name,message FROM $dbname");
-	while($row = $mysqli->fetch_array($result))
+	while($row = $result->fetch_array())
 	{ ?>
 	<h3><?php echo $row['name']; ?></h3>
     <p><?php echo $row['message']; ?></p>
