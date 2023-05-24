@@ -11,7 +11,7 @@
          $mysqli = new mysqli($dbhost, $dbuser, $dbpass);
          
          if($mysqli->connect_errno ) {
-            printf("Connect failed: %s<br />", $mysqli->connect_error);
+            printf("Connect failed: %s<br />", $mysqli->error);
             exit();
          }
          printf('Connected successfully.<br />');
