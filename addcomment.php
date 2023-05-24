@@ -1,22 +1,22 @@
 <?php
-	$host=getenv('DB_HOST'); //Add your SQL Server host here
-	$user=getenv('DB_USER'); //SQL Username
-	$pass=getenv('DB_PASS'); //SQL Password
+	$dbhost=getenv('DB_HOST'); //Add your SQL Server host here
+	$dbuser=getenv('DB_USER'); //SQL Username
+	$dbpass=getenv('DB_PASS'); //SQL Password
 	$dbname=getenv('DB_NAME'); //SQL Database Name
-	$con=mysqli_connect($host,$user,$pass,$dbname);
-	if (mysqli_connect_errno($con))
-	{
-		echo "<h1>Failed to connect to MySQL: " . mysqli_connect_error() ."</h1>";
-	}
+	$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+	if($mysqli->connect_errno ) {
+		printf("Connect failed: %s<br />", $mysqli->connect_error);
+		exit();
+	 }
 	$name=$_POST['name'];
 	$email=$_POST['email'];
 	$message=$_POST['message'];
 	$sql="INSERT INTO guestbook(name,email,message) VALUES('$name','$email','$message')";
-	if (!mysqli_query($con,$sql))
+	if (!$mysqli->query($sql))
 	{
-		die('Error: ' . mysqli_error($con));
+		die('Error: ' . $mysqli->connect_error);
 	}
 	else
 		echo "Values Stored in our Database!";
-	mysqli_close($con);
+	$mysqli->close();
 ?>

@@ -1,33 +1,41 @@
-<?php
-$host=getenv('DB_HOST'); //Add your SQL Server host here
-$user=getenv('DB_USER'); //SQL Username
-$pass=getenv('DB_PASS'); //SQL Password
-$dbname=getenv('DB_NAME'); //SQL Database Name
-$con = mysql_connect($host,$user,$pass);
-if (!$con)
-  {
-  die('Could not connect: ' . mysql_error());
-  }
-// Create database
-if (mysql_query("CREATE DATABASE $dbname",$con))
-  {
-  echo "Database created";
-  }
-else
-  {
-  echo "Error creating database: " . mysql_error();
-  }
-// Create table
-mysql_select_db($dbname, $con);
-$sql = "CREATE TABLE guestbook
-(
-id int(5) NOT NULL auto_increment,
-name varchar(60) NOT NULL default ' ',
-email varchar(60) NOT NULL default ' ',
-message text NOT NULL,
-Primary key(id)
-)";
-// Execute query
-mysql_query($sql,$con);
-mysql_close($con);
-?>
+<html>
+   <head>
+      <title>Creating MySQL Database & Table</title>
+   </head>
+   <body>
+      <?php
+         $dbhost = getenv('DB_HOST');
+         $dbuser = getenv('DB_USER');
+         $dbpass = getenv('DB_PASS');
+         $dbname = getenv('DB_NAME');
+         $mysqli = new mysqli($dbhost, $dbuser, $dbpass);
+         
+         if($mysqli->connect_errno ) {
+            printf("Connect failed: %s<br />", $mysqli->connect_error);
+            exit();
+         }
+         printf('Connected successfully.<br />');
+         if ($mysqli->query("CREATE DATABASE $dbname")) {
+            printf("Database $dbname created successfully.<br />");
+         }
+         if ($mysqli->errno) {
+          printf("Could not create database: %s<br />", $mysqli->error);
+         }
+         
+         $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+         $sql = "CREATE TABLE guestbook( ".
+            "id int(5) NOT NULL auto_increment, ".
+            "name varchar(60) NOT NULL default ' ', ".
+            "email varchar(60) NOT NULL default ' ', ".
+            "message text NOT NULL, ".
+            "Primary key(id)); ";
+         if ($mysqli->query($sql)) {
+            printf("Table guestbook created successfully.<br />");
+         }
+         if ($mysqli->errno) {
+            printf("Could not create table: %s<br />", $mysqli->error);
+         }
+         $mysqli->close();
+      ?>
+   </body>
+</html>
